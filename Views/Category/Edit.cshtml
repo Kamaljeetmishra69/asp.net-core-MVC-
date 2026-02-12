@@ -1,24 +1,51 @@
 ﻿@model Category
-<form method="post">
-    <div class="border p-3 mt-4">
-        <div class="row pb-2 ">
-            <h2 class="text-primary">Edit Category</h2>
-            <hr />
-        </div>
-        @* <div asp-validation-summary="ModelOnly"></div> *@
-        <div class="mb-3">
-            <label asp-for="CategoryName"> </label>
-            <input asp-for="CategoryName" class="form-control"/>
-            <span asp-validation-for="CategoryName" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="DisplayOrder"></label>
-            <input asp-for="DisplayOrder" class="form-control"/>
-            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
-            <div class="text-center mt-3">
-                <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
-                <button asp-controller="Category" asp-action="Index" class="btn btn-danger" style="width:150px">Back to List</button>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h4 class="mb-0">Edit Category</h4>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form method="post">
+
+                        <div class="mb-4">
+                            <label asp-for="CategoryName" class="form-label fw-semibold"></label>
+                            <input asp-for="CategoryName"
+                                   class="form-control form-control-lg"
+                                   placeholder="Enter category name" />
+                            <span asp-validation-for="CategoryName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="DisplayOrder" class="form-label fw-semibold"></label>
+                            <input asp-for="DisplayOrder"
+                                   class="form-control form-control-lg"
+                                   placeholder="Enter display order" />
+                            <span asp-validation-for="DisplayOrder" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle"></i>Edit
+                            </button>
+
+                            <a asp-controller="Category"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary px-4">
+                                Back to List
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
+
         </div>
     </div>
-</form>
+</div>
