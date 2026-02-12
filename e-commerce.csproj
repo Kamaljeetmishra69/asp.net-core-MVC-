@@ -17,7 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Category\" />
+    <ProjectReference Include="..\udemy.DataAccess\udemy.DataAccess.csproj" />
+    <ProjectReference Include="..\udemy.Models\udemy.Models.csproj" />
+    <ProjectReference Include="..\udemy.Utility\udemy.Utility.csproj" />
   </ItemGroup>
 
 </Project>
