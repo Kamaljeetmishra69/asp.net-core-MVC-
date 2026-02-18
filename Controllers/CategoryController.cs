@@ -2,6 +2,7 @@
 using Microsoft.Identity.Client;
 using System.Collections.Generic;
 using udemy.data;
+using udemy.DataAccess.Repository.IRepository;
 using udemy.Models;
 
 namespace commerce.Controllers
@@ -9,16 +10,16 @@ namespace commerce.Controllers
     public class CategoryController : Controller
     {
         //here we are injecting the ApplicationDbContext class to access the database
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryRepository _categoryRepo;
+        public CategoryController(ICategoryRepository db)
         {
-            _db = db;
+            _categoryRepo = db;
         }
         public IActionResult Index()
         {
             //retrieve all the category records from the database?
 
-            List<udemy.Models.Category> objCategoryList = _db.Modifiedcategories.ToList();
+            List<udemy.Models.Category> objCategoryList = _categoryRepo.GetAll().ToList();
             return View(objCategoryList);
 
         }
@@ -38,8 +39,8 @@ namespace commerce.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Modifiedcategories.Add(obj1);
-                _db.SaveChanges();
+                _categoryRepo.Add(obj1);
+                _categoryRepo.Save();
 
                 TempData["success"] = "category Created successfully";
 
@@ -54,7 +55,7 @@ namespace commerce.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _db.Modifiedcategories.Find(id);
+            Category? categoryFromDb = _categoryRepo.Get(u=>u.Id==id);
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -68,8 +69,8 @@ namespace commerce.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Modifiedcategories.Update(obj);   // update record
-                _db.SaveChanges();                    // save to database
+                _categoryRepo.Update(obj);   // update record
+                _categoryRepo.Save();                    // save to database
                 TempData["success"] = "Data updated successfully";
                 return RedirectToAction("Index");
             }
@@ -82,7 +83,7 @@ namespace commerce.Controllers
             {
                 return NotFound();
             }
-            Category categoryfromdb = _db.Modifiedcategories.Find(id);
+            Category categoryfromdb = _categoryRepo.Get(u => u.Id == id);
             if (categoryfromdb == null)
             {
                 return NotFound();
@@ -93,15 +94,15 @@ namespace commerce.Controllers
 
         public IActionResult DeleteConfirmed(int id)
         {
-            var categoryFromDb = _db.Modifiedcategories.Find(id);
+            var categoryFromDb = _categoryRepo.Get(u => u.Id == id);
 
             if (categoryFromDb == null)
             {
                 return NotFound();
             }
 
-            _db.Modifiedcategories.Remove(categoryFromDb);
-            _db.SaveChanges();
+            _categoryRepo.Remove(categoryFromDb);
+            _categoryRepo.Save();
 
             TempData["success"] = "Data Deleted successfully";
 
