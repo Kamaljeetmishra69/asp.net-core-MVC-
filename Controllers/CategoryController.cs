@@ -2,6 +2,7 @@
 using Microsoft.Identity.Client;
 using System.Collections.Generic;
 using udemy.data;
+using udemy.DataAccess.Repository;
 using udemy.DataAccess.Repository.IRepository;
 using udemy.Models;
 
@@ -10,16 +11,16 @@ namespace commerce.Controllers
     public class CategoryController : Controller
     {
         //here we are injecting the ApplicationDbContext class to access the database
-        private readonly ICategoryRepository _categoryRepo;
-        public CategoryController(ICategoryRepository db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _categoryRepo = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
             //retrieve all the category records from the database?
 
-            List<udemy.Models.Category> objCategoryList = _categoryRepo.GetAll().ToList();
+            List<udemy.Models.Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
 
         }
@@ -39,8 +40,8 @@ namespace commerce.Controllers
 
             if (ModelState.IsValid)
             {
-                _categoryRepo.Add(obj1);
-                _categoryRepo.Save();
+                _unitOfWork.Category.Add(obj1);
+                _unitOfWork.Save();
 
                 TempData["success"] = "category Created successfully";
 
@@ -55,7 +56,7 @@ namespace commerce.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _categoryRepo.Get(u=>u.Id==id);
+            Category? categoryFromDb = _unitOfWork.Category.Get(u=>u.Id==id);
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -69,8 +70,8 @@ namespace commerce.Controllers
         {
             if (ModelState.IsValid)
             {
-                _categoryRepo.Update(obj);   // update record
-                _categoryRepo.Save();                    // save to database
+                _unitOfWork.Category.Update(obj);   // update record
+                _unitOfWork.Save();                    // save to database
                 TempData["success"] = "Data updated successfully";
                 return RedirectToAction("Index");
             }
@@ -83,7 +84,7 @@ namespace commerce.Controllers
             {
                 return NotFound();
             }
-            Category categoryfromdb = _categoryRepo.Get(u => u.Id == id);
+            Category categoryfromdb = _unitOfWork.Category.Get(u => u.Id == id);
             if (categoryfromdb == null)
             {
                 return NotFound();
@@ -94,15 +95,15 @@ namespace commerce.Controllers
 
         public IActionResult DeleteConfirmed(int id)
         {
-            var categoryFromDb = _categoryRepo.Get(u => u.Id == id);
+            var categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
 
             if (categoryFromDb == null)
             {
                 return NotFound();
             }
 
-            _categoryRepo.Remove(categoryFromDb);
-            _categoryRepo.Save();
+            _unitOfWork.Category.Remove(categoryFromDb);
+            _unitOfWork.Save();
 
             TempData["success"] = "Data Deleted successfully";
 
