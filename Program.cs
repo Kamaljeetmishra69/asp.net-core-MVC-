@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
-using udemy.data;
+using udemy.DataAccess.data;
 using udemy.DataAccess.Repository;
 using udemy.DataAccess.Repository.IRepository;
 

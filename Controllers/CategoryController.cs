@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Collections.Generic;
-using udemy.data;
+using udemy.DataAccess.data;
 using udemy.DataAccess.Repository;
 using udemy.DataAccess.Repository.IRepository;
 using udemy.Models;
+using udemy.Models.Models;
 
 namespace commerce.Controllers
 {
@@ -56,7 +57,8 @@ namespace commerce.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _unitOfWork.Category.Get(u=>u.Id==id);
+            Category? categoryFromDb = _unitOfWork.Category.GetAll().Where(u => u.Id == id).FirstOrDefault();
+
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -84,7 +86,7 @@ namespace commerce.Controllers
             {
                 return NotFound();
             }
-            Category categoryfromdb = _unitOfWork.Category.Get(u => u.Id == id);
+            Category? categoryfromdb = (Category?)_unitOfWork.Category.GetAll().Where(x => x.Id == id).FirstOrDefault();
             if (categoryfromdb == null)
             {
                 return NotFound();
@@ -95,7 +97,7 @@ namespace commerce.Controllers
 
         public IActionResult DeleteConfirmed(int id)
         {
-            var categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+            var categoryFromDb = (Category?)_unitOfWork.Category.GetAll().Where(x => x.Id == id).FirstOrDefault();
 
             if (categoryFromDb == null)
             {

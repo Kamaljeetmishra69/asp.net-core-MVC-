@@ -24,13 +24,23 @@
                         <li class="nav-item">
                             <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
-                        <li class="nav-item">
-                          <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Index">Category_list</a>
-                        </li>
-
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                content management
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a class= "dropdown-item text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category_list</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product_list</a>
+                                </li>
+                                
+                            </ul>
                         </li>
                         
                     </ul>
@@ -45,7 +55,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer navbar-dark bg-primary mt-auto py-3">
+    <footer class="border-top footer navbar-dark bg-primary mt-auto pt-3 pb-2 mb-0">
         <div class="container text-center text-Emphasis ">
             made by me with the core of my <i class="bi bi-heart-fill"></i>
         </div>
