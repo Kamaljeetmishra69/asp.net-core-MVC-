@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
-using udemy.DataAccess.data;
-using udemy.DataAccess.Repository;
-using udemy.DataAccess.Repository.IRepository;
+using Udemy.DataAccess.data;
+using Udemy.DataAccess.Repository;
+using Udemy.DataAccess.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 

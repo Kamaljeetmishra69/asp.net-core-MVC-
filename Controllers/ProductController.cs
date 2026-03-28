@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using udemy.DataAccess.Repository.IRepository;
-using udemy.Models.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Udemy.DataAccess.Repository.IRepository;
+using Udemy.Models.Models;
+using Udemy.Models.ViewModels;
 
 namespace ecommerce.Controllers
 {
@@ -17,25 +19,53 @@ namespace ecommerce.Controllers
         {
             //retrieve all the product record from the data -base ans passing it to the coresseponding view
             List<Product> productobj = _unitOfWork.Product.GetAll().ToList();
-            return View(productobj);
 
+            return View(productobj);
+           
+            
         }
-        
+
         public IActionResult Create()
         {
-            return View();
+            // HERE we are retrieving all the category records from the database and projecting them into a list of SelectListItem objects, which can be used to populate a dropdown list in the view. Each SelectListItem contains the category name as the text and the category ID as the value
+            //ViewBag.Categorylist = Categorylist;
+            //ViewData["Categorylist"] = Categorylist;
+           ProductVM productVM =new()
+           {
+              CategoryList = _unitOfWork.Category
+               .GetAll().Select(u => new SelectListItem
+               {
+                   Text = u.CategoryName,
+                   Value = u.Id.ToString()
+
+               }),
+               product = new Product()
+           };
+
+            return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(Product obj)
+        public IActionResult Create(ProductVM productVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj);
+                _unitOfWork.Product.Add(productVM.product);
                 _unitOfWork.Save();
                 TempData["sucess"] = "product created successfully";
                 return RedirectToAction("index");
             }
-            return View();
+            else
+            {
+                 productVM.CategoryList = _unitOfWork.Category
+                 .GetAll().Select(u => new SelectListItem
+                 {
+                     Text = u.CategoryName,
+                     Value = u.Id.ToString()
+                 });
+                 return View(productVM);
+
+            }
+               
         }
         public IActionResult Edit(int? id = 0)
         {

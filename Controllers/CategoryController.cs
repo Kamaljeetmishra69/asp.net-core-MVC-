@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Collections.Generic;
-using udemy.DataAccess.data;
-using udemy.DataAccess.Repository;
-using udemy.DataAccess.Repository.IRepository;
-using udemy.Models;
-using udemy.Models.Models;
+using Udemy.DataAccess.data;
+using Udemy.DataAccess.Repository;
+using Udemy.DataAccess.Repository.IRepository;
+using Udemy.Models;
+using Udemy.Models.Models;
 
 namespace commerce.Controllers
 {
@@ -21,7 +21,7 @@ namespace commerce.Controllers
         {
             //retrieve all the category records from the database?
 
-            List<udemy.Models.Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
+            List<Udemy.Models.Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
 
         }
@@ -32,7 +32,7 @@ namespace commerce.Controllers
         }
         //this method is for show the entry in to the table which are created 
         [HttpPost]
-        public IActionResult Create(udemy.Models.Category obj1)
+        public IActionResult Create(Udemy.Models.Category obj1)
         {
             //if(obj1.CategoryName == obj1.DisplayOrder.ToString())
             //{
