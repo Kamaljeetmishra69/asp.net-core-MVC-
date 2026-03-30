@@ -1,8 +1,9 @@
 ﻿@using Udemy.Models.Models
 @model Product
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
+        <div class="col-lg-8 col-md-10 col-12">
 
             <div class="card shadow-lg border-0 rounded-4">
 
@@ -12,47 +13,70 @@
 
                 <div class="card-body p-4">
 
-                    <form method="post"class="row">
+                    <form method="post" class="row g-3">
                         <input asp-for="Id" type="hidden" />
 
-                        <div class="mb-4">
+                        <!-- Title -->
+                        <div class="col-12">
                             <label asp-for="Title" class="form-label fw-semibold"></label>
-                            <input asp-for="Title"
-                                   class="form-control form-control-lg"
-                                   placeholder="Enter category name" />
+                            <input asp-for="Title" class="form-control" placeholder="Enter product title" />
                             <span asp-validation-for="Title" class="text-danger small"></span>
                         </div>
 
-                        <div class="mb-4">
+                        <!-- Description -->
+                        <div class="col-12">
                             <label asp-for="Description" class="form-label fw-semibold"></label>
-                            <textarea asp-for="Description"
-                                   class="form-control form-control-lg"
-                                   placeholder="Enter display order" ></textarea>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                             <span asp-validation-for="Description" class="text-danger small"></span>
                         </div>
-                        <div class="mb-4">
+
+                        <!-- ISBN & Author -->
+                        <div class="col-md-6 col-12">
                             <label asp-for="ISBN" class="form-label fw-semibold"></label>
-                            <input asp-for="ISBN"
-                                   class="form-control form-control-lg"
-                                   placeholder="Enter display order" />
+                            <input asp-for="ISBN" class="form-control" />
                             <span asp-validation-for="ISBN" class="text-danger small"></span>
                         </div>
-                        <div class="mb-4">
+
+                        <div class="col-md-6 col-12">
                             <label asp-for="Author" class="form-label fw-semibold"></label>
-                            <input asp-for="Author"
-                                   class="form-control form-control-lg"
-                                   placeholder="Enter display order" />
+                            <input asp-for="Author" class="form-control" />
                             <span asp-validation-for="Author" class="text-danger small"></span>
                         </div>
-                        
-                        <div class="d-flex justify-content-between mt-4">
-                            <button type="submit" class="btn btn-primary px-4">
-                                <i class="bi bi-check-circle"></i>Update
+
+                        <!-- Prices -->
+                        <div class="col-md-6 col-12">
+                            <label asp-for="ListPrice" class="form-label fw-semibold"></label>
+                            <input asp-for="ListPrice" class="form-control" />
+                            <span asp-validation-for="ListPrice" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <label asp-for="Price" class="form-label fw-semibold"></label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <label asp-for="Price50" class="form-label fw-semibold"></label>
+                            <input asp-for="Price50" class="form-control" />
+                            <span asp-validation-for="Price50" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <label asp-for="Price100" class="form-label fw-semibold"></label>
+                            <input asp-for="Price100" class="form-control" />
+                            <span asp-validation-for="Price100" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="col-12 d-flex flex-column flex-md-row justify-content-between gap-2 mt-3">
+                            <button type="submit" class="btn btn-primary px-4 w-100 w-md-auto">
+                                <i class="bi bi-check-circle"></i> Update
                             </button>
 
                             <a asp-controller="Product"
                                asp-action="Index"
-                               class="btn btn-outline-secondary px-4">
+                               class="btn btn-outline-secondary px-4 w-100 w-md-auto">
                                 Back to List
                             </a>
                         </div>
