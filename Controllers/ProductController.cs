@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using udemy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using udemy.Models.ViewModel;
 using Udemy.DataAccess.Repository.IRepository;
 using Udemy.Models.Models;
-using Udemy.Models.ViewModels;
+//using Udemy.Models.ViewModel;
 
 namespace ecommerce.Controllers
 {
@@ -21,8 +23,7 @@ namespace ecommerce.Controllers
             List<Product> productobj = _unitOfWork.Product.GetAll().ToList();
 
             return View(productobj);
-           
-            
+
         }
 
         public IActionResult Create()
@@ -30,41 +31,44 @@ namespace ecommerce.Controllers
             // HERE we are retrieving all the category records from the database and projecting them into a list of SelectListItem objects, which can be used to populate a dropdown list in the view. Each SelectListItem contains the category name as the text and the category ID as the value
             //ViewBag.Categorylist = Categorylist;
             //ViewData["Categorylist"] = Categorylist;
-           ProductVM productVM =new()
-           {
-              CategoryList = _unitOfWork.Category
-               .GetAll().Select(u => new SelectListItem
-               {
-                   Text = u.CategoryName,
-                   Value = u.Id.ToString()
+           
+            //ViewBag.CategoryList = CategoryList;
+           
+            ProductVM productVM = new ProductVM()
+            {
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.CategoryName,
+                    Value = u.Id.ToString()      // projection in EF core to convert the category records into a list of SelectListItem objects, which can be used to populate a dropdown list in the view. Each SelectListItem contains the category name as the text and the category ID as the value
 
-               }),
-               product = new Product()
-           };
+                }),
+                product = new Product()
 
+            };
             return View(productVM);
         }
         [HttpPost]
-        public IActionResult Create(ProductVM productVM)
+        public IActionResult Create(ProductVM obj)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(productVM.product);
+                _unitOfWork.Product.Add(obj.product);
                 _unitOfWork.Save();
                 TempData["sucess"] = "product created successfully";
                 return RedirectToAction("index");
             }
-            else
-            {
-                 productVM.CategoryList = _unitOfWork.Category
-                 .GetAll().Select(u => new SelectListItem
-                 {
-                     Text = u.CategoryName,
-                     Value = u.Id.ToString()
-                 });
-                 return View(productVM);
+            return View();
+            //else
+            //{
+            //    obj.CategoryList = _unitOfWork.Category
+            //     .GetAll().Select(u => new SelectListItem
+            //     {
+            //         Text = u.CategoryName,
+            //         Value = u.Id.ToString()
+            //     });
+            //     return View(productVM);
 
-            }
+            //}
                
         }
         public IActionResult Edit(int? id = 0)
