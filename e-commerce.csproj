@@ -18,9 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\udemy.Business\udemy.Business.csproj" />
     <ProjectReference Include="..\udemy.DataAccess\udemy.DataAccess.csproj" />
-    <ProjectReference Include="..\udemy.Models\udemy.Models.csproj" />
-    <ProjectReference Include="..\udemy.Utility\udemy.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\controllers\" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>
