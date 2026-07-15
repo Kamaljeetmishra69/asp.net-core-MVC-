@@ -42,11 +42,13 @@
                         <div class="col-12">
                             <label asp-for="Product.Title" class="form-label fw-semibold small"></label>
                             <input asp-for="Product.Title" class="form-control" placeholder="Enter Product name" required />
+                           <div class="Quill-editor"></div>
                             <span asp-validation-for="Product.Title" class="text-danger small"></span>
                         </div>
                         <div class="col-12">
                             <label asp-for="Product.Description" class="form-label fw-semibold small"></label>
-                            <input asp-for="Product.Description" class="form-control" placeholder="Enter Description" required />
+                            <textarea asp-for="Product.Description" id="Description" hidden class="form-control" placeholder="Enter Description" required> </textarea>
+                                <div id="quill-editor" style="height:250px;"></div>
                             <span asp-validation-for="Product.Description" class="text-danger small"></span>
                         </div>
                         <div class="col-6">
@@ -164,3 +166,30 @@
         </div>
     </div>
 </div>
+@section Scripts
+{
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+        var quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        placeholder: 'Enter Description...'
+        });
+
+        // Load existing value (Edit page)
+        var description = document.getElementById("Description").value;
+        if (description) {
+        quill.root.innerHTML = description;
+        }
+
+        // Save HTML into textarea before submit
+        document.querySelector("form").addEventListener("submit", function () {
+        document.getElementById("Description").value = quill.root.innerHTML;
+        });
+
+        });
+    </script>
+}
