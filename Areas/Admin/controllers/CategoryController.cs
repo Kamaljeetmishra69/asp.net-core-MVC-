@@ -9,9 +9,9 @@ using Udemy.DataAccess.data;
 using Udemy.Models;
 using Udemy.Models.Models;
 
-namespace Areas.Customer.controllers
+namespace Areas.Admin.controllers
 {
-    [Area("Customer")]
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         //here we are injecting the ApplicationDbContext class to access the database
@@ -48,7 +48,7 @@ namespace Areas.Customer.controllers
                 // Duplicate validation
                 bool isAvailable = await _categoryService.IsCategoryNameAsync(obj1.CategoryName);
 
-                if (!isAvailable)
+                if (isAvailable)
                 {
                     ModelState.AddModelError("CategoryName", "Category Name already exists.");
                 }

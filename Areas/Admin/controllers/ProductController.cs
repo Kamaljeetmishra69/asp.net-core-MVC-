@@ -12,9 +12,9 @@ using Udemy.DataAccess.data;
 using Udemy.Models;
 using Udemy.Models.Models;
 
-namespace Areas.Customer.controllers
+namespace Areas.Admin.controllers
 {
-    [Area("Customer")]
+    [Area("Admin")]
     public class ProductController : Controller
     {
         private readonly IProductServices _productService;
@@ -119,30 +119,7 @@ namespace Areas.Customer.controllers
             return View(vm);
         }
 
-        //delete category logic
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var productFromDb = await _productService.GetProductByIdAsync(id.Value);
-            if (productFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(productFromDb);
-        }
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-
-            await _productService.DeleteProductAsync(id);
-            TempData["success"] = "Data Deleted successfully";
-
-            return RedirectToAction("Index");
-        }
-
+       
         #region API Endpoint
 
         public async Task<IActionResult> GetAll()
@@ -151,6 +128,39 @@ namespace Areas.Customer.controllers
             var product = await _productService.GetAllProductAsync(true);
             return Json(new { data = product });
 
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0)
+            {
+                return Json(new { success = false, message = "Invalid Id" });
+            }
+
+            var productTobeDeleted = await _productService.GetProductByIdAsync(id);
+
+            if (productTobeDeleted == null)
+            {
+                return Json(new { success = false, message = "Id not found" });
+            }
+
+            // Delete image from wwwroot
+            if (!string.IsNullOrEmpty(productTobeDeleted.ImageUrl))
+            {
+                var imagePath = Path.Combine(
+                    _webHostEnviornment.WebRootPath,
+                    productTobeDeleted.ImageUrl.TrimStart('\\', '/')
+                );
+
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+
+            await _productService.DeleteProductAsync(id);
+
+            return Json(new { success = true, message = "Delete successful" });
         }
         #endregion
     }

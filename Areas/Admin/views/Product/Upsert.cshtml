@@ -32,7 +32,10 @@
             </p>
         </div>
         <div class="card-body p-4">
-            <form Method="post" enctype="multipart/form-data">
+            <form asp-action="Upsert"
+                  asp-controller="Product"
+                  method="post"
+                  enctype="multipart/form-data">
               <div class="row">
                 <div class="col-lg-8">
                     <input asp-for="Product.Id" type="hidden" />
@@ -47,7 +50,7 @@
                         </div>
                         <div class="col-12">
                             <label asp-for="Product.Description" class="form-label fw-semibold small"></label>
-                            <textarea asp-for="Product.Description" id="Description" hidden class="form-control" placeholder="Enter Description" required> </textarea>
+                            <textarea asp-for="Product.Description" id="Description" hidden class="form-control" placeholder="Enter Description"> </textarea>
                                 <div id="quill-editor" style="height:250px;"></div>
                             <span asp-validation-for="Product.Description" class="text-danger small"></span>
                         </div>
@@ -156,7 +159,7 @@
                         }
                         else
                         {
-                            <span>Create</span>
+                            <span>Craete</span>
                         }
                          Product
                     </button>
