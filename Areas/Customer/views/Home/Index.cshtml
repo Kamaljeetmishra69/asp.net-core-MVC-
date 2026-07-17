@@ -1,21 +1,76 @@
 ﻿
-@{
-    ViewData["Title"] = "Home Page";
-}
+@model IEnumerable<Product>
 
-<!-- Hero Section -->
-<partial name="_Hero" />
+<partial name ="_Hero"/>
 
-<!-- data section -->
- <section class="container"> 
-     <div class="card-header text-center text-warning">
-         <h2>Our Top Collections </h2>
-     </div>
-     <div class="card-body  d-flex col-10">
+<!-- Catalog Section -->
+<div class="container py-5" id="catalog">
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1">Our Collection</h2>
+        <p class="text-secondary mb-0">Explore all @Model.Count() books in our catalog</p>
+    </div>
 
-     </div>
+    <!-- Books Grid -->
+    @if (Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 
- </section>
+            @foreach(var products in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 border shadow-sm book-card">
+                        <!-- TODO: Add dynamic link to Details page with asp-action and asp-route-productId -->
+                        <a asp-action="ProductDetail" asp-route-productid="@products.Id" class="text-decoration-none">
+                            <div style="aspect-ratio: 3/4; overflow: hidden;">
+                                @if (!string.IsNullOrEmpty(products.ImageUrl))
+                                {
+                                    <img src="@products.ImageUrl" class="w-100 h-100" style="object-fit:cover"/>
+                                }
+                                else
+                                {
+                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light">
+                                        <i class="bi bi-book display-3 text-secondary"></i>
+                                    </div>
+                                }
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <!-- TODO: Display product category -->
+                            <span class="badge bg-secondary mb-2">@products.Category.CategoryName</span>
+                            <h6 class="card-title fw-semibold mb-2" style="min-height: 2.5rem;">
+                                <!-- TODO: Add link to details page and display product title -->
+                                <a href="#" class="text-decoration-none text-dark">
+                                    @products.Title
+                                </a>
+                            </h6>
+                            <!-- TODO: Display product author -->
+                            <p class="text-secondary small mb-2">@products.Author</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <!-- TODO: Display product price -->
+                                    <span class="fw-bold text-success">@products.Price100.ToString("c")</span>
+                                    <!-- TODO: Display list price if greater than current price -->
+                                    @if(products.ListPrice > products.Price100)
+                                    {
+                                        <small class="text-decoration-line-through text-muted ms-1">@products.ListPrice.ToString("c")</small>
+                                    }
+                                    
+                                </div>
+                                <!-- TODO: Link to details page with product ID -->
+                                <a asp-action="ProductDetail"asp-route-productid="@products.Id" class="btn btn-sm btn-outline-dark">
+                                    View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+
+        </div>
+    }
+    
+</div>
 
 <!-- Newsletter Section -->
-<partial name="_News" />
+<partial name="_Newslatter" />
