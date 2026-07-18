@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Connections;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using udemy.Business.Services;
 using udemy.Business.Services.IServices;
+using udemy.Models.Models;
 using Udemy.DataAccess.data;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductServices, ProductServices>();
