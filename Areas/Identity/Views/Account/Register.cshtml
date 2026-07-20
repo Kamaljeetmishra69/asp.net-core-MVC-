@@ -1,0 +1,96 @@
+﻿@model udemy.Models.ViewModel.RegisterVM
+<div class="container">
+    <div class="row justify-content-center mt-5 mb-5">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border overflow-hidden">
+                <div class="card-header text-white py-3 px-4 text-center" style="background: linear-gradient(to right, #065f46, #282828, #191414);">
+                    <i class="bi bi-person-plus-fill display-4"></i>
+                    <h4 class="fw-bold mt-2 mb-1">Create Account</h4>
+                    <p class="mb-0 small" style="color: #1DB954;">Join us today</p>
+                </div>
+
+                <div class="card-body p-5">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label">Name</label>
+                                <input asp-for="Name" type="text" class="form-control" placeholder="John Doe" />
+                                <span asp-validation-for="Name" class=" text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label">Email</label>
+                                <input asp-for="Email" type="text"class="form-control"  placeholder="Enter Your Email" />
+                                <span asp-validation-for="Email" class=" text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Password" class="form-label">Password</label>
+                                <input asp-for="Password" type="password" class="form-control"  />
+                                <span asp-validation-for="Password" class=" text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ConfirmPassword" class="form-label"></label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control"  />
+                                <span asp-validation-for="ConfirmPassword" class=" text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PhoneNumber" class="form-label">PhoneNumber</label>
+                            <input asp-for="PhoneNumber" type="text" class="form-control"placeholder="Enter your phone number " />
+                            
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StreetAddress" class="form-label"></label>
+                            <input  asp-for ="StreetAddress" class="form-control" placeholder="Enter your street Address"/>
+                            <span asp-validation-for="StreetAddress" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label asp-for="City" class="form-label"></label>
+                                <input asp-for="City" class="form-control" placeholder="Enter your city" />
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="State" class="form-label"></label>
+                                <input asp-for="State" class="form-control" placeholder="Enter your State" />
+                                <span asp-validation-for="State" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label asp-for="PostalCode" class="form-label"></label>
+                                    <input asp-for="PostalCode" class="form-control" placeholder="Enter your PostalCode" />
+                                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-accent btn-lg w-100 mb-3">
+                            <i class="bi bi-person-check me-2"></i>Register
+                        </button>
+                    </form>
+
+                    <hr class="my-4" />
+
+                    <div class="text-center">
+                        <!-- TODO: Add Link -->
+                        <p class="mb-0">Already have an account? <a asp-action="Login" class="fw-semibold text-decoration-none" style="color: #17A34A;">Log in</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Script {
+    <partial name="_ValidationScriptsPartial" />
+
+}
