@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Identity.Client;
 using System.Collections.Generic;
@@ -14,7 +16,9 @@ using Udemy.Models.Models;
 
 namespace Areas.Admin.controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
+    
     public class ProductController : Controller
     {
         private readonly IProductServices _productService;
@@ -26,12 +30,12 @@ namespace Areas.Admin.controllers
             _categoryService = categoryService;
             _webHostEnviornment = webHostEnviornment;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
           return View();
         }
-
+        
         public async Task<IActionResult> Upsert(int? id)
         {
             // Load Category Dropdown
@@ -61,6 +65,7 @@ namespace Areas.Admin.controllers
                 return View(productvm);
             }
         }
+        
         [HttpPost]
         public async Task<IActionResult> Upsert(ProductVM vm)
         {
@@ -81,7 +86,7 @@ namespace Areas.Admin.controllers
                     {
                         Directory.CreateDirectory(FinalPath);
                     }
-                    using (var fileStreame = new FileStream(Path.Combine(FinalPath, FileName), FileMode.Create))    
+                    using (var fileStreame = new FileStream(Path.Combine(FinalPath, FileName), FileMode.Create))   
                     {
                         vm.File.CopyTo(fileStreame);
                     }
@@ -119,8 +124,9 @@ namespace Areas.Admin.controllers
             return View(vm);
         }
 
-       
+
         #region API Endpoint
+        [AllowAnonymous]
 
         public async Task<IActionResult> GetAll()
         {

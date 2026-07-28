@@ -1,8 +1,10 @@
-﻿@model Product 
+﻿@using udemy.Models.Models
+@model ShoppingCard
 <div class="container py-4">
     
     <!-- TODO: Add form with post method -->
     <form method ="post">
+        <input  asp-for ="ProductId"hidden />
         
 
         <div class="mb-3">
@@ -17,9 +19,9 @@
                 <!-- Image -->
                 <div class="col-lg-5 d-flex align-items-stretch" style="background: linear-gradient(135deg, #1e293b, #334155, #475569); min-height: 480px;">
                     <!-- TODO: Add conditional logic to display product image or placeholder -->
-                    @if(!string.IsNullOrEmpty(@Model.ImageUrl))
+                    @if(!string.IsNullOrEmpty(@Model.Product.ImageUrl))
                         {
-                        <img src="@Model.ImageUrl"class="h-100 w-100" style="-o-object-fit:cover"/>
+                        <img src="@Model.Product.ImageUrl"class="h-100 w-100" style="-o-object-fit:cover"/>
                         }
                         else
                         {
@@ -36,20 +38,20 @@
                 <div class="col-lg-7 p-4 p-lg-5">
                     <!-- TODO: Display category name dynamically -->
                     <span class="badge mb-3" style="background: rgba(23,163,74,0.1); color: #17A34A;">
-                        <i class="bi bi-bookmark me-1"></i> @Model.Category.CategoryName
+                        <i class="bi bi-bookmark me-1"></i> @Model.Product.Category.CategoryName
                     </span>
                     <!-- TODO: Display product title -->
-                    <h1 class="h3 fw-bold mb-1">@Model.Title</h1>
+                    <h1 class="h3 fw-bold mb-1">@Model.Product.Title</h1>
                     <!-- TODO: Display author name -->
-                    <p class="text-secondary mb-2">by <span class="fw-medium text-dark">@Model.Author</span></p>
+                    <p class="text-secondary mb-2">by <span class="fw-medium text-dark">@Model.Product.Author</span></p>
                     <!-- TODO: Display ISBN -->
-                    <p class="text-secondary small mb-4">@Model.ISBN</p>
+                    <p class="text-secondary small mb-4">@Model.Product.ISBN</p>
 
                     <div class="d-flex align-items-baseline gap-2 mb-4">
                         <!-- TODO: Display Price (regular price) -->
-                        <span class="h3 fw-bold mb-0" style="color: #17A34A;">@Model.Price</span>
+                        <span class="h3 fw-bold mb-0" style="color: #17A34A;">@Model.Product.Price</span>
                         <!-- TODO: Display ListPrice (strikethrough) -->
-                        <span class="text-decoration-line-through text-secondary">@Model.ListPrice</span>
+                        <span class="text-decoration-line-through text-secondary">@Model.Product.ListPrice</span>
                     </div>
 
                     <!-- Volume Discounts -->
@@ -62,14 +64,14 @@
                                 <div class="bg-white border rounded p-2 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center">
                                     <p class="text-uppercase text-secondary mb-1" style="font-size: 0.6rem; font-weight: 700;">1-50 Units</p>
                                     <!-- TODO: Display Price -->
-                                    <p class="fw-bold mb-0" style="color: #17A34A;">@Model.Price</p>
+                                    <p class="fw-bold mb-0" style="color: #17A34A;">@Model.Product.Price</p>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="bg-white border rounded p-2 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center" style="border-color: rgba(23,163,74,0.3) !important;">
                                     <p class="text-uppercase text-secondary mb-1" style="font-size: 0.6rem; font-weight: 700;">51-100 Units</p>
                                     <!-- TODO: Display Price50 -->
-                                    <p class="fw-bold mb-0" style="color: #17A34A;">@Model.Price50</p>
+                                    <p class="fw-bold mb-0" style="color: #17A34A;">@Model.Product.Price50</p>
                                     <span class="badge mt-1" style="font-size: 0.55rem; background: rgba(23,163,74,0.1); color: #17A34A;">SAVE</span>
                                 </div>
                             </div>
@@ -77,7 +79,7 @@
                                 <div class="bg-white border rounded p-2 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center" style="border-color: #17A34A !important;">
                                     <p class="text-uppercase text-secondary mb-1" style="font-size: 0.6rem; font-weight: 700;">100+ Units</p>
                                     <!-- TODO: Display Price100 -->
-                                    <p class="fw-bold mb-0" style="color: #17A34A;">@Model.Price100</p>
+                                    <p class="fw-bold mb-0" style="color: #17A34A;">@Model.Product.Price100</p>
                                     <span class="badge text-white mt-1" style="font-size: 0.55rem; background: #17A34A;">BEST</span>
                                 </div>
                             </div>
@@ -86,14 +88,14 @@
 
                     <!-- TODO: Display product description (use Html.Raw for HTML content) -->
                     <div class="text-secondary small mb-4">
-                        @Html.Raw(Model.Description)
+                        @Html.Raw(Model.Product.Description)
                     </div>
 
                     <div class="d-flex align-items-center gap-2">
                         <div class="input-group" style="width: 140px;">
                             <span class="input-group-text fw-semibold small" style="background: #17A34A; color: #fff;">Qty</span>
                             <!-- TODO: Bind quantity input to model -->
-                            <input type="number" value="1" class="form-control text-center fw-medium" />
+                            <input  asp-for="count"type="number" class="form-control text-center fw-medium" />
                         </div>
                         <button type="submit" class="btn btn-accent flex-grow-1 fw-semibold py-2">
                             <i class="bi bi-cart-plus me-1"></i> Add to Cart 

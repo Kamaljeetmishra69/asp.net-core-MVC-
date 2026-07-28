@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Collections.Generic;
 using System.Web.WebPages.Html;
@@ -12,6 +13,7 @@ using Udemy.Models.Models;
 namespace Areas.Admin.controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         //here we are injecting the ApplicationDbContext class to access the database
@@ -20,7 +22,7 @@ namespace Areas.Admin.controllers
         {
             _categoryService = categoryService;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
 
@@ -28,7 +30,7 @@ namespace Areas.Admin.controllers
             return View(Categories);
 
         }
-        //this Method is for creating a new category page 
+        //this Method is for creating a new category page  
         public async Task<IActionResult> Create()
         {
             return View();
@@ -111,6 +113,7 @@ namespace Areas.Admin.controllers
             return View(obj);
         }
         //delete category logic
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
@@ -125,6 +128,7 @@ namespace Areas.Admin.controllers
             return View(categoryfromdb);
         }
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             

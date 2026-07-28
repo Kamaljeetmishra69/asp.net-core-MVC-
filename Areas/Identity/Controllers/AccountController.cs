@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using udemy.Models.Models;
 using udemy.Models.ViewModel;
+using Udemy.Utility;
 
 namespace ecommerce.Areas.Identity.Controllers
 {
@@ -11,27 +14,36 @@ namespace ecommerce.Areas.Identity.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager, 
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
-        public IActionResult Login()
+        public IActionResult Login( string? returnUrl= null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  async Task<IActionResult> Login(LoginVM LoginVM)
+        public  async Task<IActionResult> Login(LoginVM LoginVM, string? returnUrl=null)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)  
             {
                 var result = await _signInManager.PasswordSignInAsync(LoginVM.Email, LoginVM.Password,
                             LoginVM.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded) 
                 { 
+                    if(!string.IsNullOrEmpty(returnUrl)&& Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
                     return RedirectToAction("Index", "Home", new {area="Customer"} );
                 }
                 ModelState.AddModelError(string.Empty,"Invalid Login attempt.");
@@ -39,15 +51,34 @@ namespace ecommerce.Areas.Identity.Controllers
 
             return View(LoginVM);
         }
-        public IActionResult Register()
+        public IActionResult Register(string? returnUrl = null)
         {
-            return View();
+
+            var model = new RegisterVM
+            {
+                RoleList =
+                [
+                    new SelectListItem{Text = SD.RoleAdmin,      Value = SD.RoleAdmin},
+                    new SelectListItem{Text = SD.RoleCustomer,   Value = SD.RoleCustomer},
+                    new SelectListItem{Text = SD.RoleEmployee,   Value = SD.RoleEmployee},
+                ]
+
+            };
+            ViewData["ReturnUrl"] = returnUrl;
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  async  Task<IActionResult> Register( RegisterVM registerVM)
+        public  async  Task<IActionResult> Register( RegisterVM registerVM , string? returnUrl=null)
         {
+            if (!await _roleManager.RoleExistsAsync(SD.RoleCustomer))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(SD.RoleEmployee));
+                await _roleManager.CreateAsync(new IdentityRole(SD.RoleAdmin));
+                await _roleManager.CreateAsync(new IdentityRole(SD.RoleCustomer));
+            }
             if (ModelState.IsValid) 
             {
                 var user = new ApplicationUser
@@ -59,13 +90,25 @@ namespace ecommerce.Areas.Identity.Controllers
                     StreetAddress = registerVM.StreetAddress,
                     City = registerVM.City,
                     State = registerVM.State,
-                    PostalCode = registerVM.PostalCode,
+                    PostalCode = registerVM.PostalCode, 
                 };
                 var result= await _userManager.CreateAsync(user,registerVM.Password);
                 if (result.Succeeded)
-                { 
-                    //user has been created and automaticaly sign in 
+                {
+                    if (!string.IsNullOrEmpty(registerVM.Role)) 
+                    {
+                        await _userManager.AddToRoleAsync(user, registerVM.Role);   
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user,SD.RoleCustomer);
+                    }
+                    //user has been created and automaticaly sign in
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
                     return RedirectToAction("Index", "Home", new { area = "Customer" });
                 }
                 foreach (var error in result.Errors)
@@ -81,9 +124,10 @@ namespace ecommerce.Areas.Identity.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult>Logout()
         {
             await _signInManager.SignOutAsync();
 

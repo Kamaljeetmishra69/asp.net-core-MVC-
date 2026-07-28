@@ -7,7 +7,7 @@ productDataTable = $('#tblData').DataTable({
     columns: [
         { data: 'title', width: '20%' },
         { data: 'isbn', width: '15%' },
-        { data: 'price', width: '10%', "render": function (data) { return '$' + data.toFixed(2); } },
+        { data: 'price', width: '10%', "render": function (data) { return '$' + data.toFixed(2); } }, 
         { data: 'author', width: '15' },
         {
             data: 'category.categoryName', width: '15', "return": function (data)

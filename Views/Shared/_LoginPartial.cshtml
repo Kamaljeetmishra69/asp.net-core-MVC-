@@ -7,7 +7,7 @@
     var user = await userManager.GetUserAsync(User);
     <a class="">
     <span class="text-white">
-        Hello, @user?.UserName
+         <i class="bi bi-person-circle me-1"></i> @user?.UserName
     </span>
     </a>
     <form method="post" asp-area="Identity" asp-controller="Account" asp-action="Logout">

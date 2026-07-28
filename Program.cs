@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using udemy.Business.Services;
 using udemy.Business.Services.IServices;
+using udemy.Business.Services.Services;
 using udemy.Models.Models;
 using Udemy.DataAccess.data;
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +19,15 @@ builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkS
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductServices, ProductServices>();
+builder.Services.AddScoped<IShoppingCardService, ShoppingCardService>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
