@@ -51,7 +51,6 @@ namespace Area.Customer.controllers
             var claimsIdentiy = (ClaimsIdentity)User.Identity;
             var userid = claimsIdentiy?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-
             if (userid == null)
             {
                 return Unauthorized();
