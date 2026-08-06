@@ -86,7 +86,7 @@ namespace Areas.Admin.controllers
                     {
                         Directory.CreateDirectory(FinalPath);
                     }
-                    using (var fileStreame = new FileStream(Path.Combine(FinalPath, FileName), FileMode.Create))   
+                    using (var fileStreame = new FileStream(Path.Combine(FinalPath, FileName),FileMode.Create))   
                     {
                         vm.File.CopyTo(fileStreame);
                     }
@@ -168,6 +168,7 @@ namespace Areas.Admin.controllers
 
             return Json(new { success = true, message = "Delete successful" });
         }
+
         #endregion
     }
 
